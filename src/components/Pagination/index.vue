@@ -54,7 +54,6 @@ const props = defineProps({
     default: false,
   },
 });
-
 const emit = defineEmits(['update:page', 'update:limit', 'pagination']);
 
 const currentPage = computed<number | undefined>({

@@ -1,26 +1,26 @@
 <template>
   <div
     class="ylform"
-    :class="inline == true ? 'the-form' : ''"
-    :style="{ marginBottom: `${marginBottom}px` }"
+    :class="props.inline == true ? 'the-form' : ''"
+    :style="{ marginBottom: `${props.marginBottom}px` }"
   >
     <el-form
-      :model="tempQueryForm"
-      :inline="inline"
-      :label-position="position"
-      :label-width="formWidth"
-      :loading="loading"
+      :model="state.tempFormParams"
+      :inline="props.inline"
+      :label-position="props.position"
+      :label-width="props.formWidth"
+      :loading="props.loading"
       ref="ruleForm"
-      :size="size"
+      :size="props.size"
     >
       <el-row
-        :gutter="rowGutter"
-        :type="rowType"
-        :justify="rowJustify"
-        :align="rowAlign"
-        :tag="rowTag"
+        :gutter="props.rowGutter"
+        :type="props.rowType"
+        :justify="props.rowJustify"
+        :align="props.rowAlign"
+        :tag="props.rowTag"
       >
-        <span v-for="item in tempFormConfig" :key="item.name">
+        <span v-for="item in state.tempFormConfig" :key="item.name">
           <el-col
             v-if="!item.hidden"
             :span="item.span"
@@ -45,7 +45,7 @@
               <!-- 输入框 -->
               <el-input
                 v-if="item.type === 'Input'"
-                v-model="tempQueryForm[item.prop]"
+                v-model="state.tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 :placeholder="
@@ -60,8 +60,8 @@
                 clearable
               >
               </el-input>
-              <template v-if="view">
-                <span v-text="tempQueryForm[item.prop]"></span>
+              <template v-if="props.view">
+                <span v-text="state.tempFormParams[item.prop]"></span>
               </template>
               <!-- 数字输入框 -->
               <el-input
@@ -69,7 +69,7 @@
                 type="number"
                 :min="item.min"
                 :max="item.max"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 :placeholder="
@@ -82,7 +82,7 @@
               <!-- InputNumber 计数器 -->
               <el-input-number
                 v-if="item.type === 'Number'"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :min="0"
                 :max="10"
                 :size="item.size"
@@ -90,8 +90,8 @@
                 label="描述文字"
               ></el-input-number>
 
-              <template v-if="view">
-                <span v-text="tempQueryForm[item.prop]"></span>
+              <template v-if="props.view">
+                <span v-text="state.tempFormParams[item.prop]"></span>
               </template>
 
               <!-- 下拉选择 -->
@@ -99,7 +99,7 @@
                 v-if="item.type === 'Select'"
                 :multiple="item.multiple"
                 :filterable="item.filterable"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 :loading="searchLoading"
@@ -120,7 +120,7 @@
               <!-- 远程搜索 -->
               <template v-if="item.type === 'Search'">
                 <el-autocomplete
-                  v-model.trim="tempQueryForm[item.prop]"
+                  v-model.trim="state.tempFormParams[item.prop]"
                   :style="{ width: item.inputWidth }"
                   :debounce="1500"
                   :fetch-suggestions="querySearchAsync"
@@ -136,7 +136,7 @@
               <!-- 日期 -->
               <el-date-picker
                 v-if="item.type === 'Date'"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 :placeholder="
@@ -150,7 +150,7 @@
               <!-- 时间 -->
               <el-time-select
                 v-if="item.type === 'Time'"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 :placeholder="
@@ -164,7 +164,7 @@
               <el-date-picker
                 v-if="item.type === 'DateTime'"
                 type="datetime"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :disabled="item.disable"
                 :placeholder="
                   item.placeholder ? item.placeholder : '请选择日期'
@@ -177,7 +177,7 @@
               <el-date-picker
                 v-if="item.type === 'datetimerange'"
                 type="datetimerange"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
                 range-separator="至"
@@ -190,11 +190,11 @@
               <!-- 单选框 普通的样式 Radio 的尺寸，仅在 border 为真时有效-->
               <template v-if="item.type === 'radio'">
                 <el-radio
-                  v-model.trim="tempQueryForm[item.prop]"
+                  v-model.trim="state.tempFormParams[item.prop]"
                   v-for="op in item.options.data"
                   :disabled="item.disable"
-                  :border="tempQueryForm[item.border]"
-                  :size="tempQueryForm[item.size]"
+                  :border="item.border"
+                  :size="item.size"
                   :label="op[item.options.label] || op.label"
                   :value="op[item.options.value] || op.value"
                   :key="op[item.options.value] || op.value"
@@ -204,8 +204,8 @@
               <!-- 单选框 按钮样式 -->
               <el-radio-group
                 v-if="item.type === 'radioButtom'"
-                v-model.trim="tempQueryForm[item.prop]"
-                :size="tempQueryForm[item.size]"
+                v-model.trim="state.tempFormParams[item.prop]"
+                :size="item.size"
                 :disabled="item.disable"
               >
                 <el-radio-button
@@ -219,7 +219,7 @@
               <!-- 文本框 -->
               <el-input
                 v-if="item.type === 'textarea'"
-                v-model.trim="tempQueryForm[item.prop]"
+                v-model.trim="state.tempFormParams[item.prop]"
                 type="textarea"
                 :style="{ width: item.inputWidth }"
                 :disabled="item.disable"
@@ -235,7 +235,7 @@
               <!-- 多选框 -->
               <template v-if="item.type === 'Checkbox'">
                 <el-checkbox
-                  v-model="tempQueryForm[item.prop]"
+                  v-model="state.tempFormParams[item.prop]"
                   :disabled="item.disabled"
                 ></el-checkbox>
               </template>
@@ -243,7 +243,7 @@
           </el-col>
         </span>
         <!-- 查询按钮 de-->
-        <span v-show="inline & hiddenFormBtn">
+        <span v-show="props.inline & props.hiddenFormBtn">
           <el-form-item v-show="show">
             <el-button
               type="primary"
@@ -254,7 +254,7 @@
             </el-button>
           </el-form-item>
         </span>
-        <span v-show="inline & hiddenFormBtn">
+        <span v-show="props.inline & props.hiddenFormBtn">
           <el-form-item v-show="show">
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
@@ -311,8 +311,8 @@ import { onMounted, reactive, ref, toRefs, watch, props, defineProps, defineEmit
     formConfig: {
       default: [],
     },
-    queryForm: {
-      default: () => {},
+    formParams: {
+      default: {} || [],
     },
     // 用于控制该表单内组件的尺寸 medium / small / mini
     size: {
@@ -348,19 +348,24 @@ import { onMounted, reactive, ref, toRefs, watch, props, defineProps, defineEmit
   const ruleFormRef = ref(null)
   const state = reactive({
       show: true,
-      tempQueryForm: {},
+      tempFormParams: {},
       tempFormConfig: [],
       fetchResult: [],
       timeout: null,
       searchMark: {}, // 搜索
   })
+  const emit = defineEmits([]);
     // input事件绑定和注册
    function inputEvent(e: {}, item: { trigger: string; }) {
-      defineEmits([item.trigger, state.tempQueryForm]);
+      console.log(e)
+      console.log(item)
+      console.log(item.trigger)
+      console.log(state.tempFormParams)
+      emit([item.trigger, state.tempFormParams]);
     }
     // 回车事件
     function toEnterSearch() {
-      defineEmits(["keyup", state.tempQueryForm]);
+      emit("keyup", state.tempFormParams);
     }
     // selectSearch 聚焦获取当前input绑定的数据
     function focusKey(item: {}) {
@@ -430,16 +435,19 @@ async function submitForm () {
       console.log('error submit!', prop)
     }
   })
-  defineEmits(["submit"]);
+  emit("submit");
 }
 
 // 清空ruleForm表单事件
 function resetForm () {
   ruleFormRef.value.resetFields()
 }
-
-watch(()=>props.queryForm, (newValue, oldValue) => {
-  state.tempQueryForm = newValue;
+/*
+   该watch的作用是遍历表单的数据赋值给表单tempQueryForm对象时,
+   遍历对象
+*/
+watch(()=>props.formParams, (newValue, oldValue) => {
+  state.tempFormParams = newValue;
 }, { deep: true, immediate: true })
 
 watch(()=>props.formConfig, (newValue, oldValue) => {

@@ -7,7 +7,7 @@ import { createPinia } from 'pinia';
 import ElementPlus from 'element-plus';
 import 'element-plus/theme-chalk/index.css';
 import Pagination from '@/components/Pagination/index.vue';
-import YlElementUIPro from "@/components/YlElementUIPro/src/index";
+// import YlElementUIPro from "@/components/YlElementUIPro/src/index";
 import '@/permission';
 // 根据字典编码获取字典列表全局方法
 import { listDictItemsByTypeCode } from '@/api/system/dict';
@@ -41,6 +41,5 @@ app
   .use(createPinia())
   .use(router)
   .use(ElementPlus)
-  .use(YlElementUIPro)
   .use(i18n)
   .mount('#app');

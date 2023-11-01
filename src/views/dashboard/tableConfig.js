@@ -49,170 +49,205 @@ export const tableAttr = {
     ],
   },
 };
-export const columnHeader = (indexAdd, viewRow, editRow, deleteRow) => [
+// export const columnHeader = (indexAdd, viewRow, editRow, deleteRow) => [
+//   {
+//     type: "selection",
+//     align: "center",
+//     prop: "selection",
+//     width: "50",
+//   },
+//   {
+//     type: "index",
+//     label: "序号",
+//     prop: "id",
+//     align: "center",
+//     width: "50",
+//     index: indexAdd,
+//   },
+//   {
+//     label: "性别",
+//     prop: "sex",
+//     align: "center",
+//     minWidth: 80,
+//     render: (h, params) => {
+//       const { row } = params;
+//       return h("div", `${sex[row.sex]}`);
+//     },
+//   },
+//   {
+//     label: "姓名",
+//     prop: "name",
+//     align: "center",
+//     minWidth: 120,
+//   },
+//   {
+//     label: "年龄",
+//     prop: "age",
+//     align: "center",
+//     minWidth: 80,
+//   },
+//   {
+//     label: "身高",
+//     prop: "height",
+//     align: "center",
+//     minWidth: 80,
+//     render: (h, params) => {
+//       const { row } = params;
+//       return h("div", `${row.height} 米`);
+//     },
+//     // sortable: true,
+//     // "sort-method": (a, b) => a.createTime - b.createTime,
+//   },
+//   {
+//     label: "健康状况",
+//     prop: "health",
+//     align: "center",
+//     minWidth: 80,
+//     render: (h, params) => {
+//       const { row } = params;
+//       return h("div", `${healthStatus[row.health]}`);
+//     },
+//   },
+//   {
+//     label: "学历",
+//     prop: "education",
+//     align: "center",
+//     minWidth: 80,
+//   },
+//   {
+//     label: "工作",
+//     prop: "job",
+//     align: "center",
+//     minWidth: 100,
+//   },
+//   {
+//     label: "婚姻状况",
+//     prop: "maritalStatus",
+//     align: "center",
+//     minWidth: 60,
+//     render: (h, params) => {
+//       const { row } = params;
+//       return h("div", `${maritalStatus[row.maritalStatus]}`);
+//     },
+//   },
+//   {
+//     label: "操作",
+//     prop: "operate",
+//     align: "center",
+//     minWidth: 140,
+//     fixed: "right",
+//     render: (h, params) => {
+//       let operateData = [];
+//       if (params.row.health == "1") {
+//         operateData = [
+//           h(
+//             "el-button",
+//             {
+//               props: {
+//                 type: "text",
+//                 size: "mini",
+//                 icon: "el-icon-view",
+//               },
+//               on: {
+//                 click() {
+//                   viewRow(params);
+//                 },
+//               },
+//             },
+//             "查看"
+//           ),
+//           h(
+//             "el-button",
+//             {
+//               props: {
+//                 type: "text",
+//                 size: "mini",
+//                 icon: "el-icon-edit",
+//               },
+//               on: {
+//                 click() {
+//                   editRow(params);
+//                 },
+//               },
+//             },
+//             "修改"
+//           ),
+//           h(
+//             "el-button",
+//             {
+//               style: {
+//                 color: "#ff4949",
+//               },
+//               props: {
+//                 type: "text",
+//                 size: "mini",
+//                 icon: "el-icon-delete",
+//               },
+//               on: {
+//                 click() {
+//                   deleteRow(params);
+//                 },
+//               },
+//             },
+//             "删除"
+//           ),
+//         ];
+//       } else {
+//         operateData = [
+//           h(
+//             "el-button",
+//             {
+//               props: {
+//                 type: "text",
+//                 size: "mini",
+//                 icon: "el-icon-view",
+//               },
+//               on: {
+//                 click() {
+//                   viewRow(params);
+//                 },
+//               },
+//             },
+//             "查看"
+//           ),
+//         ];
+//       }
+//       return h("div", operateData);
+//     },
+//   },
+// ];
+
+export const columnHeader = [
   {
-    type: "selection",
-    align: "center",
-    prop: "selection",
-    width: "50",
+    key: 'name',
+    title: '姓名',
+    dataKey: 'name',
+    width: 150,
+    // cellRenderer: ({ cellData: name }) => <ElTag>{name}</ElTag>
   },
   {
-    type: "index",
-    label: "序号",
-    prop: "id",
-    align: "center",
-    width: "50",
-    index: indexAdd,
+    key: 'sex',
+    title: '性别',
+    dataKey: 'sex',
+    width: 150,
   },
   {
-    label: "性别",
-    prop: "sex",
-    align: "center",
-    minWidth: 80,
-    render: (h, params) => {
-      const { row } = params;
-      return h("div", `${sex[row.sex]}`);
-    },
+    key: 'age',
+    title: '年龄',
+    dataKey: 'age',
+    width: 150,
   },
   {
-    label: "姓名",
-    prop: "name",
-    align: "center",
-    minWidth: 120,
+    key: 'job',
+    title: '职业',
+    dataKey: 'job',
+    width: 150,
   },
   {
-    label: "年龄",
-    prop: "age",
-    align: "center",
-    minWidth: 80,
-  },
-  {
-    label: "身高",
-    prop: "height",
-    align: "center",
-    minWidth: 80,
-    render: (h, params) => {
-      const { row } = params;
-      return h("div", `${row.height} 米`);
-    },
-    // sortable: true,
-    // "sort-method": (a, b) => a.createTime - b.createTime,
-  },
-  {
-    label: "健康状况",
-    prop: "health",
-    align: "center",
-    minWidth: 80,
-    render: (h, params) => {
-      const { row } = params;
-      return h("div", `${healthStatus[row.health]}`);
-    },
-  },
-  {
-    label: "学历",
-    prop: "education",
-    align: "center",
-    minWidth: 80,
-  },
-  {
-    label: "工作",
-    prop: "job",
-    align: "center",
-    minWidth: 100,
-  },
-  {
-    label: "婚姻状况",
-    prop: "maritalStatus",
-    align: "center",
-    minWidth: 60,
-    render: (h, params) => {
-      const { row } = params;
-      return h("div", `${maritalStatus[row.maritalStatus]}`);
-    },
-  },
-  {
-    label: "操作",
-    prop: "operate",
-    align: "center",
-    minWidth: 140,
+    key: 'education',
+    title: '学历',
+    dataKey: 'education',
+    width: 150,
     fixed: "right",
-    render: (h, params) => {
-      let operateData = [];
-      if (params.row.health == "1") {
-        operateData = [
-          h(
-            "el-button",
-            {
-              props: {
-                type: "text",
-                size: "mini",
-                icon: "el-icon-view",
-              },
-              on: {
-                click() {
-                  viewRow(params);
-                },
-              },
-            },
-            "查看"
-          ),
-          h(
-            "el-button",
-            {
-              props: {
-                type: "text",
-                size: "mini",
-                icon: "el-icon-edit",
-              },
-              on: {
-                click() {
-                  editRow(params);
-                },
-              },
-            },
-            "修改"
-          ),
-          h(
-            "el-button",
-            {
-              style: {
-                color: "#ff4949",
-              },
-              props: {
-                type: "text",
-                size: "mini",
-                icon: "el-icon-delete",
-              },
-              on: {
-                click() {
-                  deleteRow(params);
-                },
-              },
-            },
-            "删除"
-          ),
-        ];
-      } else {
-        operateData = [
-          h(
-            "el-button",
-            {
-              props: {
-                type: "text",
-                size: "mini",
-                icon: "el-icon-view",
-              },
-              on: {
-                click() {
-                  viewRow(params);
-                },
-              },
-            },
-            "查看"
-          ),
-        ];
-      }
-      return h("div", operateData);
-    },
-  },
-];
+  }
+]

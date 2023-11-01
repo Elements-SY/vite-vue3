@@ -45,3 +45,27 @@ export function mix(color1: string, color2: string, weight: number) {
   const bStr = ('0' + (b || 0).toString(16)).slice(-2);
   return '#' + rStr + gStr + bStr;
 }
+
+export function queryForm(formConfig){
+    const formParams = {};
+    formConfig.map(item => {
+        if (item.hasOwnProperty("prop") && item.hasOwnProperty("propType") && item.propType) {
+            if (typeof item.propType == "string") {
+                formParams[item.prop] = item.value || "";
+            } else if (typeof item.propType == "number") {
+                formParams[item.prop] = item.value || 1;
+            } else if (typeof item.propType == "object") {
+                if (Array.isArray(item.propType) || item.propType == "array") {
+                    formParams[item.prop] = [];
+                } else {
+                    formParams[item.prop] = null;
+                }
+            } else if (typeof item.propType == "boolean") {
+                formParams[item.prop] = item.propType;
+            }
+        } else {
+            formParams[item.prop] = item.value || "";
+        }
+    })
+    return formParams
+}

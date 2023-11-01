@@ -94,31 +94,21 @@
         />
       </el-col>
     </el-row>
-        <el-row>
+    <el-row>
       <el-col>
         <yl-form
           ref="ruleForm"
           :formConfig="formConfig"
-          :queryForm="queryForm"
+          :formParams="formParams"
           :inline="false"
           formWidth="auto"
           @blur="blurEvent"
         />
       </el-col>
     </el-row>
-    <yl-table
+    <!-- Elementplus 虚拟化表格正在测试阶段不建议使用 -->
+     <yl-table
       ref="ylTable"
-      :attrs="tableAttr"
-      :loadingTable="tableAttr.loadingTable"
-      :columns="columns"
-      :tableData="tableData"
-      :pageConfig="pageConfig"
-      @search="searchBtn"
-      @add="addBtn"
-      @delete="deleteData"
-      @sizeChange="handleSizeChange"
-      @currentChange="handleCurrentChange"
-      @selectionEvent="tableSelectionChange"
     >
     </yl-table>
   </div>
@@ -132,7 +122,8 @@ import { onMounted, reactive, ref, toRefs, watch, nextTick } from 'vue';
 // 组件引用
 import GithubCorner from '@/components/GithubCorner/index.vue';
 import SvgIcon from '@/components/SvgIcon/index.vue';
-
+import YlForm from '@/components/YlElementUIPro/packages/YlForm/index.js';
+import YlTable from '@/components/YlElementUIPro/packages/YlTable/index.js';
 import BarChart from './components/Chart/BarChart.vue';
 import PieChart from './components/Chart/PieChart.vue';
 import RadarChart from './components/Chart/RadarChart.vue';
@@ -142,13 +133,12 @@ import Team from './components/Team/index.vue';
 import { formConfig } from "./formConfig";
 import { tableAttr, columnHeader } from "./tableConfig";
 import { tableData } from "./tableDate";
-console.log(columnHeader())
+import { queryForm } from "../../utils/index"
+console.log(queryForm(formConfig))
+console.log(columnHeader)
 const state = reactive({
       formConfig: formConfig, // 表单配置项
-      queryForm: {
-        // 表单参数
-        status: "有效",
-      },
+      formParams: queryForm(formConfig), // 表单参数
       pageConfig: {
         // 分页配置项
         isPagination: true,
@@ -159,12 +149,7 @@ const state = reactive({
         },
       },
       tableAttr: tableAttr, // table配置项
-      columns: columnHeader(
-        indexAdd,
-        viewRow,
-        editRow,
-        deleteRow
-      ), // 表头
+      columns: columnHeader, // 表头
       tableData: [], // 表格数据
 })
   nextTick(() => {
@@ -183,7 +168,7 @@ const state = reactive({
     }
     // 搜索
     function searchBtn(row) {
-      console.log("搜索：", state.queryForm);
+      console.log("搜索：", state.formParams);
       getTableData();
     }
     // 添加
